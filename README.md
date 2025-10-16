@@ -108,9 +108,11 @@ kubectl apply -f k8s/
 
 # Forward ports
 
+```bash
 kubectl port-forward svc/frontend 3000:3000 -n techcommerce
 kubectl port-forward svc/product-api 5000:5000 -n techcommerce
 kubectl port-forward svc/order-api 8000:8000 -n techcommerce
+```
 
 ## Monitoring
 
