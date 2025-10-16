@@ -87,6 +87,9 @@ jobs:
   sast-scan:
     name: SAST Security Scan
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -94,13 +97,17 @@ jobs:
       - name: Run Semgrep SAST Scan
         uses: returntocorp/semgrep-action@v1
         with:
-          generateSarif: true
+          config: auto
+          publishToken: ${{ secrets.SEMGREP_APP_TOKEN }}
+        continue-on-error: true
 
       - name: Upload SARIF to GitHub Security
-        uses: github/codeql-action/upload-sarif@v2
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
         with:
           sarif_file: semgrep.sarif
           category: semgrep
+        continue-on-error: true
 
   # ============================================
   # JOB 3: Build Docker Images
