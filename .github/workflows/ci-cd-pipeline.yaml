@@ -274,6 +274,9 @@ jobs:
     needs: deploy-staging
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/master'
+    permissions:
+      issues: write
+      contents: read
 
     steps:
       - name: Wait for manual approval
