@@ -1,40 +1,37 @@
-TechCommerce DevOps Infrastructure
+# TechCommerce DevOps Infrastructure
 
 CI/CD pipeline and Kubernetes deployment for a microservices e-commerce platform
 
-Table of Contents
+---
 
-Overview
+## Table of Contents
 
-Architecture
+- [Overview](#overview)
+- [Architecture](#architecture)
+- [Technology Stack](#technology-stack)
+- [Quick Start](#quick-start)
+- [CI/CD Pipeline](#cicd-pipeline)
+- [Design Decisions & Security](#design-decisions--security)
+- [Monitoring & Alerts](#monitoring--alerts)
+- [Troubleshooting](#troubleshooting)
+- [License](#license)
 
-Technology Stack
+---
 
-Quick Start
-
-CI/CD Pipeline
-
-Design Decisions & Security
-
-Monitoring & Alerts
-
-Troubleshooting
-
-License
-
-Overview
+## Overview
 
 TechCommerce is an e-commerce platform split into three microservices:
 
-Frontend: Node.js (port 3000)
-
-Product API: Python Flask (port 5000)
-
-Order API: Python Flask (port 8000)
+- **Frontend:** Node.js (port 3000)
+- **Product API:** Python Flask (port 5000)
+- **Order API:** Python Flask (port 8000)
 
 Features include automated CI/CD, Docker/Kubernetes deployment, security scanning, auto-scaling, and monitoring with alerts. Microservices allow independent updates, scaling, and fault isolation.
 
-Architecture
+---
+
+## Architecture
+
 User Browser
 │
 ▼
@@ -44,64 +41,66 @@ Frontend Service
 ▼ ▼
 Product API Order API
 
-HPA: Product API scales 2–10 pods based on 70% CPU
+yaml
+Copy code
 
-Health checks: Liveness and readiness probes for all services
+- **HPA:** Product API scales 2–10 pods based on 70% CPU
+- **Health checks:** Liveness and readiness probes for all services
 
-Benefits of Microservices:
+**Benefits of Microservices:**
 
-Monolith Microservices
-Single large app Independent services
-One failure breaks all Fault isolation
-Hard to scale features Scale services individually
-Hard to update Easy independent updates
-Technology Stack
+| Monolith               | Microservices               |
+| ---------------------- | --------------------------- |
+| Single large app       | Independent services        |
+| One failure breaks all | Fault isolation             |
+| Hard to scale features | Scale services individually |
+| Hard to update         | Easy independent updates    |
 
-Application Layer
+---
 
-Frontend: Node.js, Express, Jest
+## Technology Stack
 
-APIs: Python Flask, Pytest
+**Application Layer**
 
-Container & Orchestration
+- Frontend: Node.js, Express, Jest
+- APIs: Python Flask, Pytest
 
-Docker (multi-stage builds)
+**Container & Orchestration**
 
-Kubernetes, Minikube
+- Docker (multi-stage builds)
+- Kubernetes, Minikube
 
-CI/CD Pipeline
+**CI/CD Pipeline**
 
-GitHub Actions
+- GitHub Actions
+- Semgrep (code scanning)
+- Trivy (image scanning)
+- Docker Hub (image registry)
 
-Semgrep (code scanning)
+**Monitoring**
 
-Trivy (image scanning)
+- Prometheus (metrics collection)
+- Grafana (visualization)
+- Alert Manager (alerts)
 
-Docker Hub (image registry)
+---
 
-Monitoring
+## Quick Start
 
-Prometheus (metrics collection)
+### Prerequisites
 
-Grafana (visualization)
+- Docker Desktop
+- Minikube
+- kubectl
+- GitHub account
 
-Alert Manager (alerts)
+### Local Development
 
-Quick Start
-Prerequisites
-
-Docker Desktop
-
-Minikube
-
-kubectl
-
-GitHub account
-
-Local Development
+```bash
 git clone https://github.com/mnafisa100/devops-midterm-2025.git
 cd devops-midterm-2025
 minikube start
+```
 
 # Deploy Kubernetes resources
 
@@ -113,76 +112,95 @@ kubectl port-forward svc/frontend 3000:3000 -n techcommerce
 kubectl port-forward svc/product-api 5000:5000 -n techcommerce
 kubectl port-forward svc/order-api 8000:8000 -n techcommerce
 
-Monitoring
+## Monitoring
+
+Deploy the monitoring stack:
+
+```bash
 kubectl apply -f k8s/monitoring/
 kubectl port-forward svc/grafana 3001:3000 -n monitoring
+```
 
-Access Grafana: http://localhost:3001
-(default login: admin/admin)
+## Access Grafana
 
-CI/CD Pipeline
+- URL: [http://localhost:3001](http://localhost:3001)
+- Default login: `admin/admin`
 
-Stages:
+---
 
-Stage Description
-Test Run automated tests for frontend and APIs
-Security Scan Semgrep scans code for vulnerabilities
-Build Docker Images Multi-stage builds, push to Docker Hub
-Scan Docker Images Trivy vulnerability scan
-Deploy Staging Automatic deployment to staging environment
-Manual Approval Approval required before production
-Deploy Production Deploy to production with rollback on failure
-Design Decisions & Security
+## CI/CD Pipeline
 
-Multi-stage Docker builds: smaller, secure images
+**Stages:**
 
-Health checks: ensures reliability and zero-downtime deployments
+| Stage               | Description                                   |
+| ------------------- | --------------------------------------------- |
+| Test                | Run automated tests for frontend and APIs     |
+| Security Scan       | Semgrep scans code for vulnerabilities        |
+| Build Docker Images | Multi-stage builds, push to Docker Hub        |
+| Scan Docker Images  | Trivy vulnerability scan                      |
+| Deploy Staging      | Automatic deployment to staging environment   |
+| Manual Approval     | Approval required before production           |
+| Deploy Production   | Deploy to production with rollback on failure |
 
-Horizontal Pod Autoscaler (HPA): auto-scale Product API based on CPU
+---
 
-ConfigMaps & Secrets: separate config from sensitive data
+## Design Decisions & Security
 
-Resource limits: prevent resource hogging and improve scheduling
+- **Multi-stage Docker builds:** smaller, secure images
+- **Health checks:** ensures reliability and zero-downtime deployments
+- **Horizontal Pod Autoscaler (HPA):** auto-scale Product API based on CPU
+- **ConfigMaps & Secrets:** separate config from sensitive data
+- **Resource limits:** prevent resource hogging and improve scheduling
+- **Network policies:** restrict service-to-service communication
+- **Security:** non-root containers, read-only filesystem, RBAC, encrypted secrets, Trivy scans
 
-Network policies: restrict service-to-service communication
+---
 
-Security: non-root containers, read-only filesystem, RBAC, encrypted secrets, Trivy scans
+## Monitoring & Alerts
 
-Monitoring & Alerts
-Metric Threshold Action
-Pod restarts >3 in 10 min Investigate crashes
-API response time >2s for 5 min Check DB/API latency
-Error rate >5% for 5 min Check application logs
-Disk usage >85% Clean logs or expand storage
+| Metric            | Threshold     | Action                       |
+| ----------------- | ------------- | ---------------------------- |
+| Pod restarts      | >3 in 10 min  | Investigate crashes          |
+| API response time | >2s for 5 min | Check DB/API latency         |
+| Error rate        | >5% for 5 min | Check application logs       |
+| Disk usage        | >85%          | Clean logs or expand storage |
 
-Prometheus collects metrics
+- Prometheus collects metrics
+- Grafana visualizes dashboards
+- Alert Manager notifies critical issues
 
-Grafana visualizes metrics and dashboards
+## Troubleshooting
 
-Alert Manager notifies critical issues
+### CrashLoopBackOff
 
-Troubleshooting
+**Steps:**
 
-CrashLoopBackOff
+1. **Check pod logs**
 
-Check pod logs: kubectl logs <pod-name> -n techcommerce
+```bash
+kubectl logs <pod-name> -n techcommerce
+```
 
-Check events: kubectl get events -n techcommerce
+# Check Events
 
-Verify image, secrets, health checks
+To see recent Kubernetes events for troubleshooting:
 
-Slow Application (Normal CPU/Memory)
+```bash
+kubectl get events -n techcommerce
+```
 
-Profile code
+### Slow Application (Normal CPU/Memory)
 
-Check DB queries, external API calls, caching
+**Steps:**
 
-Adjust connection pools or fix memory leaks
+- Profile the application code
+- Check database queries, external API calls, and caching
+- Adjust connection pools or fix memory leaks
 
-ImagePullBackOff
+### ImagePullBackOff
 
-Verify image name/tag
+**Steps:**
 
-Check registry credentials and network connectivity
-
-Use imagePullSecrets for private repositories
+- Verify image name and tag
+- Check registry credentials and network connectivity
+- Use `imagePullSecrets` for private repositories
