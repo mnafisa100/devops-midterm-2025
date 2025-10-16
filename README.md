@@ -7,7 +7,6 @@ CI/CD pipeline and Kubernetes deployment for a microservices e-commerce platform
 ## Table of Contents
 
 - [Overview](#overview)
-- [Architecture](#architecture)
 - [Technology Stack](#technology-stack)
 - [Quick Start](#quick-start)
 - [CI/CD Pipeline](#cicd-pipeline)
@@ -62,6 +61,9 @@ Features include automated CI/CD, Docker/Kubernetes deployment, security scannin
 - Semgrep (code scanning)
 - Trivy (image scanning)
 - Docker Hub (image registry)
+
+Note:
+For this assignment, staging and production deployments are mocked using echo commands to simulate Kubernetes rollouts. This preserves the full CI/CD flow without requiring live cluster access or real Docker credentials.
 
 **Monitoring**
 
