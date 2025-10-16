@@ -6,18 +6,14 @@ name: CI/CD Pipeline
 on:
   push:
     branches:
-      - main
       - master
-      - develop
     paths:
       - "services/**"
       - "k8s/**"
       - ".github/workflows/**"
   pull_request:
     branches:
-      - main
       - master
-      - develop
   workflow_dispatch:
 
 env:
@@ -254,7 +250,7 @@ jobs:
   deploy-staging:
     name: Deploy to Staging
     needs: image-scan
-    if: always() && (github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/master')
+    if: always() && (github.ref == 'refs/heads/master')
     runs-on: ubuntu-latest
     environment:
       name: staging
@@ -301,14 +297,6 @@ jobs:
           kubectl run -n techcommerce-staging smoke-test --image=curlimages/curl --rm -i --restart=Never -- \
             sh -c "curl -f http://frontend:3000/health && curl -f http://product-api:5000/api/health && curl -f http://order-api:8000/api/health"
 
-      - name: Notify Slack on deployment
-        if: always()
-        uses: 8398a7/action-slack@v3
-        with:
-          status: ${{ job.status }}
-          text: "Staging deployment: ${{ job.status }}"
-          webhook_url: ${{ secrets.SLACK_WEBHOOK }}
-
   # ============================================
   # JOB 6: Manual Approval Gate
   # ============================================
@@ -316,7 +304,7 @@ jobs:
     name: Approve Production Deployment
     needs: deploy-staging
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/master'
     environment:
       name: production
 
@@ -331,7 +319,7 @@ jobs:
     name: Deploy to Production
     needs: approve-production
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/master'
     environment:
       name: production
       url: https://techcommerce.io
@@ -393,19 +381,3 @@ jobs:
           kubectl rollout undo deployment/order-api -n techcommerce
           kubectl rollout status deployment/frontend -n techcommerce --timeout=5m
           echo "Rollback completed!"
-
-      - name: Send success notification
-        if: success()
-        uses: 8398a7/action-slack@v3
-        with:
-          status: success
-          text: "Production deployment successful!"
-          webhook_url: ${{ secrets.SLACK_WEBHOOK }}
-
-      - name: Send failure notification
-        if: failure()
-        uses: 8398a7/action-slack@v3
-        with:
-          status: failure
-          text: "Production deployment failed! Rollback executed."
-          webhook_url: ${{ secrets.SLACK_WEBHOOK }}
