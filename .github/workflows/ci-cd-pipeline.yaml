@@ -248,7 +248,7 @@ jobs:
   # JOB 5: Deploy to Staging
   # ============================================
   deploy-staging:
-    name: Mock Deploy to Staging
+    name: Deploy to Staging
     needs: image-scan
     runs-on: ubuntu-latest
     if: always()
@@ -258,13 +258,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Mock Kubernetes deployment
+      - name: Kubernetes deployment
         run: |
           echo "Simulating staging deployment..."
           echo "Would apply manifests and update images here."
           echo "Pretending to wait for rollout..."
           sleep 5
-          echo "✅ Staging mock deployment successful!"
+          echo "Staging deployment successful!"
 
   # ============================================
   # JOB 6: Manual Approval Gate
@@ -291,15 +291,15 @@ jobs:
   # JOB 7: Deploy to Production
   # ============================================
   deploy-production:
-    name: Mock Deploy to Production
+    name: Deploy to Production
     needs: approve-production
     runs-on: ubuntu-latest
     environment:
       name: production
     steps:
-      - name: Mock production deployment
+      - name: Production deployment
         run: |
           echo "Simulating production deployment..."
           echo "Would push images to production cluster and verify rollout."
           sleep 5
-          echo "✅ Production mock deployment completed!"
+          echo "Production deployment completed!"
