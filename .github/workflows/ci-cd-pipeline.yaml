@@ -282,6 +282,7 @@ jobs:
           approvers: mnafisa100
           minimum-approvals: 1
           issue-title: "Approve deployment to production"
+          secret: ${{ secrets.GITHUB_TOKEN }}
 
   # ============================================
   # JOB 7: Deploy to Production
