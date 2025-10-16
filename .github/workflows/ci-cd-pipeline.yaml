@@ -386,16 +386,5 @@ jobs:
         status: failure
         text: 'Production deployment failed! Rollback executed.'
         webhook_url: ${{ secrets.SLACK_WEBHOOK }}
-      - '.github/workflows/**'
-  pull_request:
-    branches:
-      - main
-      - develop
-  workflow_dispatch:
-
-env:
-  REGISTRY: docker.io
-  PRODUCT_IMAGE: ${{ secrets.DOCKER_USERNAME }}/techcommerce-product-api
-  ORDER_IMAGE: ${{ secrets.DOCKER_USERNAME }}/techcommerce-order-api
-  FRONTEND_IMAGE: ${{ secrets.DOCKER_USERNAME }}/techcommerce-frontend
+     
 
