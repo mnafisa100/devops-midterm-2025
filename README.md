@@ -30,20 +30,6 @@ Features include automated CI/CD, Docker/Kubernetes deployment, security scannin
 
 ---
 
-## Architecture
-
-User Browser
-│
-▼
-Frontend Service
-│
-┌────┴────┐
-▼ ▼
-Product API Order API
-
-yaml
-Copy code
-
 - **HPA:** Product API scales 2–10 pods based on 70% CPU
 - **Health checks:** Liveness and readiness probes for all services
 
@@ -104,7 +90,9 @@ minikube start
 
 # Deploy Kubernetes resources
 
+```bash
 kubectl apply -f k8s/
+```
 
 # Forward ports
 
