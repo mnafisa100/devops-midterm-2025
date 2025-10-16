@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+  namespace: techcommerce
+  labels:
+    app: techcommerce
+data:
+  # Frontend configuration
+  PRODUCT_API_URL: "http://product-api:5000"
+  ORDER_API_URL: "http://order-api:8000"
+  NODE_ENV: "production"
+  LOG_LEVEL: "info"
+
+  # Product API configuration
+  FLASK_ENV: "production"
+  WORKERS: "4"
+  TIMEOUT: "60"
+
+  # Order API configuration
+  DATABASE_POOL_SIZE: "10"
+  CACHE_TTL: "300"

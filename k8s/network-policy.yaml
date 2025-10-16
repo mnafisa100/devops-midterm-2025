@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: techcommerce-network-policy
+  namespace: techcommerce
+spec:
+  podSelector: {}
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              name: techcommerce
+        - podSelector: {}
+  egress:
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              name: techcommerce
+    - to:
+        - podSelector: {}
+    - ports:
+        - port: 53
+          protocol: UDP
+        - port: 443
+          protocol: TCP

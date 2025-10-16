@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TechCommerce - E-Commerce Platform</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+          "Oxygen", "Ubuntu", "Cantarell", sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+      }
+
+      .container {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        max-width: 1200px;
+        width: 100%;
+        padding: 40px;
+      }
+
+      header {
+        text-align: center;
+        margin-bottom: 40px;
+      }
+
+      h1 {
+        color: #333;
+        font-size: 2.5em;
+        margin-bottom: 10px;
+      }
+
+      .tagline {
+        color: #666;
+        font-size: 1.1em;
+        margin-bottom: 5px;
+      }
+
+      .status-badge {
+        display: inline-block;
+        background: #4ade80;
+        color: white;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 0.9em;
+        font-weight: 600;
+        margin-top: 10px;
+      }
+
+      .main-content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+        margin-bottom: 40px;
+      }
+
+      @media (max-width: 768px) {
+        .main-content {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .card {
+        background: #f8f9fa;
+        border-left: 4px solid #667eea;
+        padding: 25px;
+        border-radius: 8px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(102, 126, 234, 0.1);
+      }
+
+      .card h2 {
+        color: #333;
+        margin-bottom: 15px;
+        font-size: 1.5em;
+      }
+
+      .card p {
+        color: #666;
+        line-height: 1.6;
+        margin-bottom: 10px;
+      }
+
+      .api-list {
+        list-style: none;
+        margin-top: 15px;
+      }
+
+      .api-list li {
+        color: #555;
+        padding: 8px 0;
+        border-bottom: 1px solid #e0e0e0;
+      }
+
+      .api-list li:last-child {
+        border-bottom: none;
+      }
+
+      .api-list li::before {
+        content: "✓ ";
+        color: #4ade80;
+        font-weight: bold;
+        margin-right: 8px;
+      }
+
+      .endpoints {
+        background: #f8f9fa;
+        border-left: 4px solid #764ba2;
+        padding: 25px;
+        border-radius: 8px;
+        margin-bottom: 30px;
+      }
+
+      .endpoints h2 {
+        color: #333;
+        margin-bottom: 20px;
+        font-size: 1.5em;
+      }
+
+      .endpoint {
+        background: white;
+        padding: 15px;
+        margin-bottom: 12px;
+        border-radius: 6px;
+        border-left: 3px solid #667eea;
+      }
+
+      .endpoint-method {
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: 4px;
+        font-weight: 600;
+        font-size: 0.85em;
+        margin-right: 10px;
+      }
+
+      .method-get {
+        background: #dbeafe;
+        color: #0369a1;
+      }
+
+      .method-post {
+        background: #dcfce7;
+        color: #166534;
+      }
+
+      .endpoint-url {
+        font-family: "Courier New", monospace;
+        color: #666;
+        margin-top: 5px;
+      }
+
+      .services-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        margin: 30px 0;
+      }
+
+      @media (max-width: 768px) {
+        .services-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .service-box {
+        background: white;
+        border: 2px solid #e5e7eb;
+        padding: 20px;
+        border-radius: 8px;
+        text-align: center;
+        transition: all 0.3s ease;
+      }
+
+      .service-box:hover {
+        border-color: #667eea;
+        background: #f0f4ff;
+      }
+
+      .service-icon {
+        font-size: 2.5em;
+        margin-bottom: 10px;
+      }
+
+      .service-box h3 {
+        color: #333;
+        margin-bottom: 10px;
+      }
+
+      .service-box p {
+        color: #666;
+        font-size: 0.95em;
+      }
+
+      .button-group {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        margin-top: 30px;
+        flex-wrap: wrap;
+      }
+
+      button {
+        padding: 12px 28px;
+        border: none;
+        border-radius: 6px;
+        font-size: 1em;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+      }
+
+      .btn-secondary {
+        background: #e5e7eb;
+        color: #333;
+      }
+
+      .btn-secondary:hover {
+        background: #d1d5db;
+      }
+
+      .status-section {
+        background: #f0fdf4;
+        border: 2px solid #86efac;
+        padding: 25px;
+        border-radius: 8px;
+        margin-bottom: 30px;
+      }
+
+      .status-section h3 {
+        color: #15803d;
+        margin-bottom: 15px;
+      }
+
+      .status-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 0;
+        border-bottom: 1px solid #bbf7d0;
+      }
+
+      .status-item:last-child {
+        border-bottom: none;
+      }
+
+      .status-name {
+        color: #333;
+        font-weight: 500;
+      }
+
+      .status-value {
+        color: #15803d;
+        font-weight: 600;
+      }
+
+      footer {
+        text-align: center;
+        padding-top: 30px;
+        border-top: 1px solid #e5e7eb;
+        color: #999;
+      }
+
+      .loader {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 3px solid #f3f3f3;
+        border-top: 3px solid #667eea;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin-right: 10px;
+        vertical-align: middle;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      .error-message {
+        background: #fee2e2;
+        border: 1px solid #fca5a5;
+        color: #991b1b;
+        padding: 12px;
+        border-radius: 6px;
+        margin-top: 10px;
+      }
+
+      .success-message {
+        background: #dcfce7;
+        border: 1px solid #86efac;
+        color: #15803d;
+        padding: 12px;
+        border-radius: 6px;
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>🛍️ TechCommerce</h1>
+        <p class="tagline">
+          Modern E-Commerce Platform - Microservices Edition
+        </p>
+        <span class="status-badge" id="statusBadge"
+          >🟢 All Systems Operational</span
+        >
+      </header>
+
+      <div class="status-section" id="statusSection">
+        <h3>Service Health Status</h3>
+        <div class="status-item">
+          <span class="status-name">Frontend Service</span>
+          <span class="status-value" id="frontendStatus">🟢 Online</span>
+        </div>
+        <div class="status-item">
+          <span class="status-name">Product API</span>
+          <span class="status-value" id="productStatus">Checking...</span>
+        </div>
+        <div class="status-item">
+          <span class="status-name">Order API</span>
+          <span class="status-value" id="orderStatus">Checking...</span>
+        </div>
+      </div>
+
+      <div class="main-content">
+        <div class="card">
+          <h2>📦 Product Service</h2>
+          <p>
+            Browse and manage products in our catalog. Access product
+            information, availability, and pricing.
+          </p>
+          <ul class="api-list">
+            <li>Get all products</li>
+            <li>Get product by ID</li>
+            <li>Create new product</li>
+            <li>Update product details</li>
+            <li>Delete products</li>
+          </ul>
+          <button class="btn-primary" onclick="testProductAPI()">
+            Test Product API
+          </button>
+          <div id="productMessage"></div>
+        </div>
+
+        <div class="card">
+          <h2>📋 Order Service</h2>
+          <p>
+            Manage customer orders, track shipments, and process transactions.
+            Complete order lifecycle management.
+          </p>
+          <ul class="api-list">
+            <li>Create new order</li>
+            <li>Get order details</li>
+            <li>Update order status</li>
+            <li>List all orders</li>
+            <li>Cancel orders</li>
+          </ul>
+          <button class="btn-primary" onclick="testOrderAPI()">
+            Test Order API
+          </button>
+          <div id="orderMessage"></div>
+        </div>
+      </div>
+
+      <div class="endpoints">
+        <h2>🔌 Available Endpoints</h2>
+
+        <div class="endpoint">
+          <span class="endpoint-method method-get">GET</span>
+          <span>/products</span>
+          <div class="endpoint-url">http://product-api:5000/products</div>
+          <p style="margin-top: 5px; color: #666; font-size: 0.9em">
+            Retrieve all products from the catalog
+          </p>
+        </div>
+
+        <div class="endpoint">
+          <span class="endpoint-method method-get">GET</span>
+          <span>/products/:id</span>
+          <div class="endpoint-url">http://product-api:5000/products/1</div>
+          <p style="margin-top: 5px; color: #666; font-size: 0.9em">
+            Get specific product details
+          </p>
+        </div>
+
+        <div class="endpoint">
+          <span class="endpoint-method method-post">POST</span>
+          <span>/orders</span>
+          <div class="endpoint-url">http://order-api:8000/orders</div>
+          <p style="margin-top: 5px; color: #666; font-size: 0.9em">
+            Create a new order
+          </p>
+        </div>
+
+        <div class="endpoint">
+          <span class="endpoint-method method-get">GET</span>
+          <span>/orders/:id</span>
+          <div class="endpoint-url">http://order-api:8000/orders/1</div>
+          <p style="margin-top: 5px; color: #666; font-size: 0.9em">
+            Retrieve order information
+          </p>
+        </div>
+      </div>
+
+      <h2 style="text-align: center; color: #333; margin-bottom: 20px">
+        Our Microservices
+      </h2>
+      <div class="services-grid">
+        <div class="service-box">
+          <div class="service-icon">🎨</div>
+          <h3>Frontend</h3>
+          <p>React/Node.js UI on port 3000</p>
+        </div>
+        <div class="service-box">
+          <div class="service-icon">📦</div>
+          <h3>Product API</h3>
+          <p>Flask service on port 5000</p>
+        </div>
+        <div class="service-box">
+          <div class="service-icon">📮</div>
+          <h3>Order API</h3>
+          <p>Flask service on port 8000</p>
+        </div>
+      </div>
+
+      <div class="button-group">
+        <button class="btn-primary" onclick="testAllServices()">
+          <span id="testButton">Test All Services</span>
+        </button>
+        <button class="btn-secondary" onclick="viewMetrics()">
+          View Metrics
+        </button>
+        <button class="btn-secondary" onclick="viewLogs()">View Logs</button>
+      </div>
+
+      <footer>
+        <p>
+          TechCommerce DevOps Assignment | Kubernetes Deployment v1.0 | Last
+          Updated: 2025
+        </p>
+        <p style="margin-top: 10px; font-size: 0.9em">
+          Running in production environment with full observability
+        </p>
+      </footer>
+    </div>
+
+    <script>
+      const API_BASE = window.location.origin;
+      let serviceChecksCompleted = 0;
+      let servicesToCheck = 3;
+
+      // Check service health on page load
+      document.addEventListener("DOMContentLoaded", function () {
+        checkServiceHealth();
+      });
+
+      function checkServiceHealth() {
+        // Check Product API
+        fetch("/api/health/products")
+          .then((response) => {
+            if (response.ok) {
+              updateStatusDisplay("productStatus", "🟢 Online");
+            } else {
+              updateStatusDisplay("productStatus", "🔴 Offline");
+            }
+          })
+          .catch(() => {
+            updateStatusDisplay("productStatus", "🔴 Offline");
+          });
+
+        // Check Order API
+        fetch("/api/health/orders")
+          .then((response) => {
+            if (response.ok) {
+              updateStatusDisplay("orderStatus", "🟢 Online");
+            } else {
+              updateStatusDisplay("orderStatus", "🔴 Offline");
+            }
+          })
+          .catch(() => {
+            updateStatusDisplay("orderStatus", "🔴 Offline");
+          });
+      }
+
+      function updateStatusDisplay(elementId, status) {
+        const element = document.getElementById(elementId);
+        if (element) {
+          element.textContent = status;
+        }
+      }
+
+      function testProductAPI() {
+        const button = event.target;
+        const messageDiv = document.getElementById("productMessage");
+        button.disabled = true;
+        button.innerHTML = '<span class="loader"></span>Testing...';
+        messageDiv.innerHTML = "";
+
+        fetch("/api/products")
+          .then((response) => response.json())
+          .then((data) => {
+            messageDiv.innerHTML =
+              '<div class="success-message">✅ Product API is responding correctly!</div>';
+            console.log("Product API Response:", data);
+          })
+          .catch((error) => {
+            messageDiv.innerHTML =
+              '<div class="error-message">❌ Failed to connect to Product API</div>';
+            console.error("Error:", error);
+          })
+          .finally(() => {
+            button.disabled = false;
+            button.innerHTML = "Test Product API";
+          });
+      }
+
+      function testOrderAPI() {
+        const button = event.target;
+        const messageDiv = document.getElementById("orderMessage");
+        button.disabled = true;
+        button.innerHTML = '<span class="loader"></span>Testing...';
+        messageDiv.innerHTML = "";
+
+        fetch("/api/orders")
+          .then((response) => response.json())
+          .then((data) => {
+            messageDiv.innerHTML =
+              '<div class="success-message">✅ Order API is responding correctly!</div>';
+            console.log("Order API Response:", data);
+          })
+          .catch((error) => {
+            messageDiv.innerHTML =
+              '<div class="error-message">❌ Failed to connect to Order API</div>';
+            console.error("Error:", error);
+          })
+          .finally(() => {
+            button.disabled = false;
+            button.innerHTML = "Test Order API";
+          });
+      }
+
+      function testAllServices() {
+        const button = event.target;
+        const originalText = button.innerHTML;
+        button.disabled = true;
+        button.innerHTML = '<span class="loader"></span>Testing...';
+
+        Promise.all([
+          fetch("/api/health/products").catch(() => ({ ok: false })),
+          fetch("/api/health/orders").catch(() => ({ ok: false })),
+        ]).then((responses) => {
+          const allHealthy = responses.every((r) => r.ok);
+          if (allHealthy) {
+            alert("✅ All services are healthy and responding!");
+          } else {
+            alert(
+              "⚠️ Some services may be unavailable. Check the status section above."
+            );
+          }
+          button.disabled = false;
+          button.innerHTML = originalText;
+        });
+      }
+
+      function viewMetrics() {
+        // This would typically open a Grafana dashboard
+        window.open("/metrics", "_blank");
+      }
+
+      function viewLogs() {
+        // This would typically open a logging interface
+        alert(
+          "📊 Logs available in production monitoring dashboard (Grafana/Prometheus)"
+        );
+      }
+
+      // Auto-refresh health status every 30 seconds
+      setInterval(checkServiceHealth, 30000);
+    </script>
+  </body>
+</html>
