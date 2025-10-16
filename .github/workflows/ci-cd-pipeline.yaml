@@ -119,10 +119,7 @@ jobs:
         uses: returntocorp/semgrep-action@v1
         with:
           config: auto
-          generateSarif: true
         continue-on-error: true
-        env:
-          SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_APP_TOKEN }}
 
       - name: Check if SARIF exists
         id: sarif_check
