@@ -270,14 +270,19 @@ jobs:
   # JOB 6: Manual Approval Gate
   # ============================================
   approve-production:
-    name: Mock Manual Approval
+    name: Manual Approval For Production
     needs: deploy-staging
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+
     steps:
-      - name: Simulate approval step
-        run: |
-          echo "Waiting for manual approval..."
-          echo "Approval simulated for assignment."
+      - name: Wait for manual approval
+        uses: trstringer/manual-approval@v1
+        with:
+          approvers: mnafisa100
+          minimum-approvals: 1
+          issue-title: "Approve deployment to production"
+          timeout-minutes: 5
 
   # ============================================
   # JOB 7: Deploy to Production
