@@ -1,0 +1,15 @@
+version: "2"
+authtoken: 35RUVnVJzVjpwurFAJLLqk1oypK_76s6Q6F8vCNQKmkzNsxGf
+
+tunnels:
+  frontend:
+    proto: http
+    addr: 3000
+
+  product-api:
+    proto: http
+    addr: 5000
+
+  order-api:
+    proto: http
+    addr: 8000
