@@ -329,12 +329,12 @@
   <body>
     <div class="container">
       <header>
-        <h1>🛍️ TechCommerce</h1>
+        <h1>TechCommerce</h1>
         <p class="tagline">
           Modern E-Commerce Platform - Microservices Edition
         </p>
         <span class="status-badge" id="statusBadge"
-          >🟢 All Systems Operational</span
+          >All Systems Operational</span
         >
       </header>
 
@@ -342,7 +342,7 @@
         <h3>Service Health Status</h3>
         <div class="status-item">
           <span class="status-name">Frontend Service</span>
-          <span class="status-value" id="frontendStatus">🟢 Online</span>
+          <span class="status-value" id="frontendStatus">Online</span>
         </div>
         <div class="status-item">
           <span class="status-name">Product API</span>
@@ -356,7 +356,7 @@
 
       <div class="main-content">
         <div class="card">
-          <h2>📦 Product Service</h2>
+          <h2>Product Service</h2>
           <p>
             Browse and manage products in our catalog. Access product
             information, availability, and pricing.
@@ -375,7 +375,7 @@
         </div>
 
         <div class="card">
-          <h2>📋 Order Service</h2>
+          <h2>Order Service</h2>
           <p>
             Manage customer orders, track shipments, and process transactions.
             Complete order lifecycle management.
@@ -395,7 +395,7 @@
       </div>
 
       <div class="endpoints">
-        <h2>🔌 Available Endpoints</h2>
+        <h2>Available Endpoints</h2>
 
         <div class="endpoint">
           <span class="endpoint-method method-get">GET</span>
@@ -463,6 +463,12 @@
           View Metrics
         </button>
         <button class="btn-secondary" onclick="viewLogs()">View Logs</button>
+        <button class="btn-secondary" onclick="viewTunnel()">
+          View Public URL
+        </button>
+        <button class="btn-secondary" onclick="viewInfrastructure()">
+          Infrastructure Status
+        </button>
       </div>
 
       <footer>
@@ -491,26 +497,26 @@
         fetch("/api/health/products")
           .then((response) => {
             if (response.ok) {
-              updateStatusDisplay("productStatus", "🟢 Online");
+              updateStatusDisplay("productStatus", "Online");
             } else {
-              updateStatusDisplay("productStatus", "🔴 Offline");
+              updateStatusDisplay("productStatus", "Offline");
             }
           })
           .catch(() => {
-            updateStatusDisplay("productStatus", "🔴 Offline");
+            updateStatusDisplay("productStatus", "Offline");
           });
 
         // Check Order API
         fetch("/api/health/orders")
           .then((response) => {
             if (response.ok) {
-              updateStatusDisplay("orderStatus", "🟢 Online");
+              updateStatusDisplay("orderStatus", "Online");
             } else {
-              updateStatusDisplay("orderStatus", "🔴 Offline");
+              updateStatusDisplay("orderStatus", "Offline");
             }
           })
           .catch(() => {
-            updateStatusDisplay("orderStatus", "🔴 Offline");
+            updateStatusDisplay("orderStatus", "Offline");
           });
       }
 
@@ -532,12 +538,12 @@
           .then((response) => response.json())
           .then((data) => {
             messageDiv.innerHTML =
-              '<div class="success-message">✅ Product API is responding correctly!</div>';
+              '<div class="success-message">Product API is responding correctly!</div>';
             console.log("Product API Response:", data);
           })
           .catch((error) => {
             messageDiv.innerHTML =
-              '<div class="error-message">❌ Failed to connect to Product API</div>';
+              '<div class="error-message">Failed to connect to Product API</div>';
             console.error("Error:", error);
           })
           .finally(() => {
@@ -557,12 +563,12 @@
           .then((response) => response.json())
           .then((data) => {
             messageDiv.innerHTML =
-              '<div class="success-message">✅ Order API is responding correctly!</div>';
+              '<div class="success-message">Order API is responding correctly!</div>';
             console.log("Order API Response:", data);
           })
           .catch((error) => {
             messageDiv.innerHTML =
-              '<div class="error-message">❌ Failed to connect to Order API</div>';
+              '<div class="error-message">Failed to connect to Order API</div>';
             console.error("Error:", error);
           })
           .finally(() => {
@@ -583,10 +589,10 @@
         ]).then((responses) => {
           const allHealthy = responses.every((r) => r.ok);
           if (allHealthy) {
-            alert("✅ All services are healthy and responding!");
+            alert("All services are healthy and responding!");
           } else {
             alert(
-              "⚠️ Some services may be unavailable. Check the status section above."
+              "Some services may be unavailable. Check the status section above."
             );
           }
           button.disabled = false;
@@ -602,12 +608,29 @@
       function viewLogs() {
         // This would typically open a logging interface
         alert(
-          "📊 Logs available in production monitoring dashboard (Grafana/Prometheus)"
+          "Logs available in production monitoring dashboard (Grafana/Prometheus)"
         );
       }
 
       // Auto-refresh health status every 30 seconds
       setInterval(checkServiceHealth, 30000);
+
+      function viewTunnel() {
+        const tunnelUrl = "https://unnaturally-unsaponified-zoe.ngrok-free.dev";
+        if (confirm("Open public tunnel URL?\n\n" + tunnelUrl)) {
+          window.open(tunnelUrl, "_blank");
+        }
+      }
+
+      function viewInfrastructure() {
+        alert(
+          "Infrastructure managed by Terraform\n\n" +
+            "Namespaces: techcommerce, logging, monitoring\n" +
+            "Logging: Loki + Promtail\n" +
+            "Tunneling: ngrok active\n" +
+            "State: terraform.tfstate"
+        );
+      }
     </script>
   </body>
 </html>
