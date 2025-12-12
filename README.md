@@ -1,6 +1,6 @@
 # TechCommerce DevOps Infrastructure
 
-## A complete DevOps implementation of a microservices-based e-commerce platform. This project demonstrates containerization, orchestration, CI/CD, tunneling, centralized logging, and infrastructure as code (IaC) using Kubernetes, GitHub Actions, ngrok, Loki, and Terraform.
+A complete DevOps implementation of a microservices-based e-commerce platform. This project demonstrates containerization, orchestration, CI/CD, tunneling, centralized logging, and infrastructure as code (IaC) using Kubernetes, GitHub Actions, ngrok, Loki, and Terraform.
 
 ## Table of Contents
 
@@ -292,7 +292,7 @@ View Logs:
 kubectl logs -n techcommerce -l app=frontend
 ```
 
-Loji Logs:
+Loki Logs:
 
 ```bash
 kubectl port-forward svc/loki 3100:3100 -n logging
